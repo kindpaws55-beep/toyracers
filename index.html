@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ToyRacers</title>
+  <style>
+    body {
+      background: #0f0f1a;
+      color: white;
+      font-family: Arial;
+      text-align: center;
+      padding: 20px;
+    }
+    button {
+      padding: 15px 25px;
+      margin: 10px;
+      font-size: 18px;
+      border-radius: 10px;
+      border: none;
+      background: #6c5ce7;
+      color: white;
+      cursor: pointer;
+    }
+    #carImg {
+      max-width: 200px;
+      margin-top: 20px;
+    }
+    .race-bar {
+      width: 80%;
+      height: 20px;
+      background: #333;
+      margin: 10px auto;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: #00ffcc;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🚗 ToyRacers</h1>
+
+<input type="file" id="upload" accept="image/*">
+<br>
+<img id="carImg" src="" alt="">
+
+<br>
+<button onclick="startRace()">Quick Race</button>
+
+<div class="race-bar">
+  <div id="p1" class="progress"></div>
+</div>
+
+<div class="race-bar">
+  <div id="p2" class="progress"></div>
+</div>
+
+<h2 id="result"></h2>
+
+<script>
+let carSelected = false;
+
+document.getElementById("upload").onchange = function(e) {
+  const file = e.target.files[0];
+  if (file) {
+    document.getElementById("carImg").src = URL.createObjectURL(file);
+    carSelected = true;
+  }
+};
+
+function startRace() {
+  if (!carSelected) {
+    alert("Upload your car first!");
+    return;
+  }
+
+  let p1 = 0;
+  let p2 = 0;
+
+  document.getElementById("result").innerText = "";
+
+  let interval = setInterval(() => {
+    p1 += Math.random() * 10;
+    p2 += Math.random() * 10;
+
+    document.getElementById("p1").style.width = p1 + "%";
+    document.getElementById("p2").style.width = p2 + "%";
+
+    if (p1 >= 100 || p2 >= 100) {
+      clearInterval(interval);
+
+      if (p1 > p2) {
+        document.getElementById("result").innerText = "🏆 YOU WIN";
+      } else {
+        document.getElementById("result").innerText = "❌ YOU LOSE";
+      }
+    }
+  }, 200);
+}
+</script>
+
+</body>
+</html>
