@@ -5,157 +5,449 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ToyRacers MVP</title>
   <style>
-    *{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial,sans-serif;background:radial-gradient(circle at top,#27256b 0%,#080812 55%,#030306 100%);color:#fff;display:flex;justify-content:center;align-items:center;padding:16px}.app{width:100%;max-width:430px;background:rgba(12,12,30,.92);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.45);text-align:center}.logo{font-size:34px;font-weight:900;margin-bottom:5px}.subtitle{color:#b8b8ff;font-size:14px;margin-bottom:18px}.top{display:flex;gap:10px;margin-bottom:14px}.pill{flex:1;background:rgba(255,255,255,.08);border-radius:14px;padding:11px;font-weight:bold;font-size:14px}button,label.upload-btn{width:100%;display:block;padding:15px;margin-top:12px;font-size:17px;font-weight:bold;border-radius:16px;border:none;background:linear-gradient(135deg,#8b5cf6,#06b6d4);color:#fff;cursor:pointer}button.secondary{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15)}button:disabled{opacity:.45;cursor:not-allowed}input[type=file]{display:none}.car-preview{margin-top:16px;width:100%;min-height:190px;border-radius:22px;background:rgba(255,255,255,.06);display:flex;justify-content:center;align-items:center;overflow:hidden;border:1px dashed rgba(255,255,255,.2)}.car-preview img{width:100%;height:230px;object-fit:cover;filter:saturate(1.7) contrast(1.16) brightness(1.05)}.stats{display:none;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.stat{background:rgba(255,255,255,.08);border-radius:14px;padding:12px}.stat small{display:block;color:#aaa;margin-bottom:4px}.screen{display:none}.screen.active{display:block}.bets{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.track{margin-top:20px;background:rgba(255,255,255,.08);padding:16px;border-radius:20px}.lane{margin:16px 0;height:34px;background:#151527;border-radius:99px;overflow:hidden;border:1px solid rgba(255,255,255,.1);position:relative}.progress{height:100%;width:0%;background:linear-gradient(90deg,#22c55e,#eab308,#ef4444);transition:width .12s linear}.car-icon{position:absolute;top:4px;left:4px;font-size:22px;transform:translateX(0);transition:transform .12s linear}.vs{display:flex;justify-content:space-between;gap:10px;margin-top:12px}.card{flex:1;background:rgba(255,255,255,.08);border-radius:16px;padding:12px;font-size:13px}#result{font-size:26px;font-weight:900;margin-top:20px;min-height:36px}.note{color:#aaa;font-size:13px;margin-top:14px;line-height:1.4}.badge{display:inline-block;background:rgba(34,197,94,.18);color:#86efac;border:1px solid rgba(34,197,94,.35);padding:6px 10px;border-radius:999px;font-size:12px;margin-top:8px}.garage-title{font-size:22px;font-weight:900;margin-top:16px}.locked{opacity:.55}
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: url('bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 15, 0.35);
+      z-index: 0;
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 430px;
+      background: rgba(5, 5, 20, 0.72);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 26px;
+      padding: 22px;
+      text-align: center;
+      box-shadow:
+        0 0 35px rgba(255, 0, 200, 0.35),
+        0 0 80px rgba(0, 180, 255, 0.22);
+    }
+
+    .logo {
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      color: #ffd56a;
+      text-shadow:
+        0 0 12px rgba(255, 213, 106, 0.8),
+        0 0 25px rgba(255, 0, 200, 0.7);
+    }
+
+    .subtitle {
+      color: #d8c7ff;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .top {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .pill {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.10);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 15px;
+      padding: 11px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    button, label.upload-btn {
+      width: 100%;
+      display: block;
+      padding: 15px;
+      margin-top: 12px;
+      font-size: 17px;
+      font-weight: bold;
+      border-radius: 16px;
+      border: none;
+      color: white;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff00cc, #4f46e5, #00c8ff);
+      box-shadow:
+        0 0 18px rgba(255, 0, 200, 0.55),
+        0 0 35px rgba(0, 200, 255, 0.35);
+      transition: 0.2s;
+    }
+
+    button:hover, label.upload-btn:hover {
+      transform: scale(1.03);
+    }
+
+    button.secondary {
+      background: rgba(255, 255, 255, 0.10);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: none;
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    input[type="file"] { display: none; }
+
+    .car-preview {
+      margin-top: 16px;
+      width: 100%;
+      min-height: 190px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.07);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      border: 1px dashed rgba(255, 255, 255, 0.24);
+    }
+
+    .car-preview img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      filter: saturate(1.8) contrast(1.18) brightness(1.08);
+    }
+
+    .stats {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .stat {
+      background: rgba(255, 255, 255, 0.10);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .stat small {
+      display: block;
+      color: #b8b8d8;
+      margin-bottom: 4px;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .bets {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .track {
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 16px;
+      border-radius: 20px;
+    }
+
+    .lane {
+      margin: 16px 0;
+      height: 34px;
+      background: #151527;
+      border-radius: 99px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+    }
+
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #eab308, #ef4444);
+      transition: width 0.12s linear;
+    }
+
+    .car-icon {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      font-size: 22px;
+      transform: translateX(0);
+      transition: transform 0.12s linear;
+    }
+
+    .vs {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .card {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.10);
+      border-radius: 16px;
+      padding: 12px;
+      font-size: 13px;
+    }
+
+    #result {
+      font-size: 26px;
+      font-weight: 900;
+      margin-top: 20px;
+      min-height: 36px;
+    }
+
+    .note {
+      color: #c7c7d8;
+      font-size: 13px;
+      margin-top: 14px;
+      line-height: 1.4;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 213, 106, 0.15);
+      color: #ffd56a;
+      border: 1px solid rgba(255, 213, 106, 0.35);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    .locked { opacity: 0.55; }
   </style>
 </head>
 <body>
-<div class="app">
-  <div class="logo">🏎 ToyRacers</div>
-  <div class="subtitle">Upload your car. Turn it into a toy racer. Race for crypto.</div>
+  <div class="app">
+    <div class="logo">TOYRACERS</div>
+    <div class="subtitle">Upload your car. Turn it into a toy racer. Race for crypto.</div>
 
-  <div class="top">
-    <div class="pill">Balance<br><span id="balance">100.00</span> USDT</div>
-    <div class="pill">Score<br><span id="score">0</span></div>
+    <div class="top">
+      <div class="pill">Balance<br><span id="balance">100.00</span> USDT</div>
+      <div class="pill">Score<br><span id="score">0</span></div>
+    </div>
+
+    <div id="home" class="screen active">
+      <label class="upload-btn" for="upload">Create My Racer</label>
+      <input id="upload" type="file" accept="image/*" />
+
+      <div class="car-preview" id="previewBox">
+        <div>Upload your car photo</div>
+      </div>
+
+      <div class="stats" id="stats">
+        <div class="stat"><small>Horsepower</small><b id="hp">---</b></div>
+        <div class="stat"><small>Torque</small><b id="torque">---</b></div>
+        <div class="stat"><small>Speed</small><b id="speed">---</b></div>
+        <div class="stat"><small>Handling</small><b id="handling">---</b></div>
+      </div>
+
+      <div id="rarity"></div>
+      <button id="quickRaceBtn" onclick="openBets()" disabled>Quick Race</button>
+      <button class="secondary locked" id="upgradeBtn" onclick="upgradeCar()" disabled>Upgrade Racer — unlock at 20 score</button>
+      <div class="note">MVP mode: test balance. Реальные USDT подключим позже.</div>
+    </div>
+
+    <div id="bets" class="screen">
+      <h2>Choose Bet</h2>
+      <div class="bets">
+        <button onclick="startRace(10)">10 USDT</button>
+        <button onclick="startRace(25)">25 USDT</button>
+        <button onclick="startRace(50)">50 USDT</button>
+        <button onclick="startRace(100)">100 USDT</button>
+      </div>
+      <button class="secondary" onclick="showScreen('home')">Back to Garage</button>
+    </div>
+
+    <div id="race" class="screen">
+      <h2 id="raceTitle">Race Started</h2>
+      <div class="vs">
+        <div class="card"><b>Your Racer</b><br>Power: <span id="myPower">0</span></div>
+        <div class="card"><b>Opponent</b><br>Power: <span id="opPower">0</span></div>
+      </div>
+      <div class="track">
+        <div>Your Racer</div>
+        <div class="lane"><div id="p1" class="progress"></div><div id="car1" class="car-icon">🏎</div></div>
+        <div>Opponent</div>
+        <div class="lane"><div id="p2" class="progress"></div><div id="car2" class="car-icon">🚗</div></div>
+      </div>
+      <div id="result"></div>
+      <button id="againBtn" style="display:none" onclick="showScreen('bets')">Play Again</button>
+      <button class="secondary" id="garageBtn" style="display:none" onclick="showScreen('home')">Garage</button>
+    </div>
   </div>
 
-  <div id="home" class="screen active">
-    <label class="upload-btn" for="upload">Create My Racer</label>
-    <input id="upload" type="file" accept="image/*" />
-    <div class="car-preview" id="previewBox"><div>Upload your car photo</div></div>
-    <div class="stats" id="stats">
-      <div class="stat"><small>Horsepower</small><b id="hp">---</b></div>
-      <div class="stat"><small>Torque</small><b id="torque">---</b></div>
-      <div class="stat"><small>Speed</small><b id="speed">---</b></div>
-      <div class="stat"><small>Handling</small><b id="handling">---</b></div>
-    </div>
-    <div id="rarity"></div>
-    <button id="quickRaceBtn" onclick="openBets()" disabled>Quick Race</button>
-    <button class="secondary locked" id="upgradeBtn" onclick="upgradeCar()" disabled>Upgrade Racer — unlock at 20 score</button>
-    <div class="note">MVP mode: test balance. Реальные USDT подключим позже.</div>
-  </div>
+  <script>
+    let carSelected = false;
+    let balance = 100;
+    let score = 0;
+    let stats = { hp: 0, torque: 0, speed: 0, handling: 0, level: 1, rarity: 'Common' };
 
-  <div id="bets" class="screen">
-    <h2>Choose Bet</h2>
-    <div class="bets">
-      <button onclick="startRace(10)">10 USDT</button>
-      <button onclick="startRace(25)">25 USDT</button>
-      <button onclick="startRace(50)">50 USDT</button>
-      <button onclick="startRace(100)">100 USDT</button>
-    </div>
-    <button class="secondary" onclick="showScreen('home')">Back to Garage</button>
-  </div>
+    const upload = document.getElementById('upload');
 
-  <div id="race" class="screen">
-    <h2 id="raceTitle">Race Started</h2>
-    <div class="vs">
-      <div class="card"><b>Your Racer</b><br>Power: <span id="myPower">0</span></div>
-      <div class="card"><b>Opponent</b><br>Power: <span id="opPower">0</span></div>
-    </div>
-    <div class="track">
-      <div>Your Racer</div>
-      <div class="lane"><div id="p1" class="progress"></div><div id="car1" class="car-icon">🏎</div></div>
-      <div>Opponent</div>
-      <div class="lane"><div id="p2" class="progress"></div><div id="car2" class="car-icon">🚗</div></div>
-    </div>
-    <div id="result"></div>
-    <button id="againBtn" style="display:none" onclick="showScreen('bets')">Play Again</button>
-    <button class="secondary" id="garageBtn" style="display:none" onclick="showScreen('home')">Garage</button>
-  </div>
-</div>
+    upload.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
 
-<script>
-let carSelected=false,balance=100,score=0;
-let stats={hp:0,torque:0,speed:0,handling:0,level:1,rarity:'Common'};
+      const url = URL.createObjectURL(file);
+      document.getElementById('previewBox').innerHTML = `<img src="${url}" alt="ToyRacer">`;
+      generateStats();
+      carSelected = true;
+      document.getElementById('quickRaceBtn').disabled = false;
+    });
 
-const upload=document.getElementById('upload');
-upload.addEventListener('change',e=>{
-  const file=e.target.files[0]; if(!file)return;
-  const url=URL.createObjectURL(file);
-  document.getElementById('previewBox').innerHTML=`<img src="${url}" alt="ToyRacer">`;
-  generateStats(); carSelected=true;
-  document.getElementById('quickRaceBtn').disabled=false;
-});
+    function generateStats() {
+      const roll = Math.random();
+      stats.rarity = roll > 0.94 ? 'Legendary' : roll > 0.78 ? 'Epic' : roll > 0.48 ? 'Rare' : 'Common';
+      const bonus = { Common: 0, Rare: 18, Epic: 38, Legendary: 70 }[stats.rarity];
 
-function generateStats(){
-  const roll=Math.random();
-  stats.rarity=roll>.94?'Legendary':roll>.78?'Epic':roll>.48?'Rare':'Common';
-  const bonus={Common:0,Rare:18,Epic:38,Legendary:70}[stats.rarity];
-  stats.hp=Math.floor(280+Math.random()*260+bonus);
-  stats.torque=Math.floor(360+Math.random()*300+bonus);
-  stats.speed=Math.floor(62+Math.random()*24+bonus/8);
-  stats.handling=Math.floor(55+Math.random()*28+bonus/10);
-  renderStats();
-}
+      stats.hp = Math.floor(280 + Math.random() * 260 + bonus);
+      stats.torque = Math.floor(360 + Math.random() * 300 + bonus);
+      stats.speed = Math.floor(62 + Math.random() * 24 + bonus / 8);
+      stats.handling = Math.floor(55 + Math.random() * 28 + bonus / 10);
 
-function renderStats(){
-  document.getElementById('hp').textContent=stats.hp+' HP';
-  document.getElementById('torque').textContent=stats.torque+' Nm';
-  document.getElementById('speed').textContent=stats.speed+'/100';
-  document.getElementById('handling').textContent=stats.handling+'/100';
-  document.getElementById('stats').style.display='grid';
-  document.getElementById('rarity').innerHTML=`<span class="badge">${stats.rarity} Racer · Level ${stats.level}</span>`;
-  const up=document.getElementById('upgradeBtn');
-  if(score>=20){up.disabled=false;up.classList.remove('locked');up.textContent='Upgrade Racer — 15 USDT';}
-}
+      renderStats();
+    }
 
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
-function openBets(){if(!carSelected)return alert('First create your racer!');showScreen('bets')}
-function carPower(){return Math.round((stats.speed*.4)+(stats.handling*.25)+(stats.hp/10*.2)+(stats.torque/10*.15)+(stats.level*4))}
+    function renderStats() {
+      document.getElementById('hp').textContent = stats.hp + ' HP';
+      document.getElementById('torque').textContent = stats.torque + ' Nm';
+      document.getElementById('speed').textContent = stats.speed + '/100';
+      document.getElementById('handling').textContent = stats.handling + '/100';
+      document.getElementById('stats').style.display = 'grid';
+      document.getElementById('rarity').innerHTML = `<span class="badge">${stats.rarity} Racer · Level ${stats.level}</span>`;
 
-function upgradeCar(){
-  if(score<20)return alert('Upgrade unlocks at 20 score');
-  if(balance<15)return alert('Not enough test USDT');
-  balance-=15;stats.level++;stats.hp+=25;stats.torque+=28;stats.speed+=3;stats.handling+=3;
-  updateTop();renderStats();alert('Racer upgraded!');
-}
+      const up = document.getElementById('upgradeBtn');
+      if (score >= 20) {
+        up.disabled = false;
+        up.classList.remove('locked');
+        up.textContent = 'Upgrade Racer — 15 USDT';
+      }
+    }
 
-function startRace(bet){
-  if(balance<bet)return alert('Not enough test USDT');
-  showScreen('race');
-  document.getElementById('raceTitle').textContent='Bet: '+bet+' USDT';
-  document.getElementById('result').textContent='';
-  document.getElementById('againBtn').style.display='none';
-  document.getElementById('garageBtn').style.display='none';
-  let p1=0,p2=0;
-  const p1El=document.getElementById('p1'),p2El=document.getElementById('p2'),car1=document.getElementById('car1'),car2=document.getElementById('car2');
-  p1El.style.width='0%';p2El.style.width='0%';car1.style.transform='translateX(0)';car2.style.transform='translateX(0)';
-  const my=carPower();
-  const op=Math.round(55+Math.random()*55+score/20);
-  document.getElementById('myPower').textContent=my;
-  document.getElementById('opPower').textContent=op;
-  const myBoost=4.2+(my/100)*2.6;
-  const opBoost=4.2+(op/100)*2.6;
-  const interval=setInterval(()=>{
-    p1+=Math.random()*myBoost;
-    p2+=Math.random()*opBoost;
-    const w1=Math.min(p1,100),w2=Math.min(p2,100);
-    p1El.style.width=w1+'%';p2El.style.width=w2+'%';
-    car1.style.transform=`translateX(${w1*3}px)`;car2.style.transform=`translateX(${w2*3}px)`;
-    if(p1>=100||p2>=100){clearInterval(interval);finishRace(p1,p2,bet)}
-  },130);
-}
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
 
-function finishRace(p1,p2,bet){
-  const result=document.getElementById('result');
-  const prize=bet*2*.925;
-  if(p1>p2){balance=balance-bet+prize;score+=10;result.textContent='🏆 YOU WIN +'+prize.toFixed(2)+' USDT'}
-  else{balance-=bet;score+=2;result.textContent='❌ YOU LOSE -'+bet+' USDT'}
-  updateTop();renderStats();
-  document.getElementById('againBtn').style.display='block';
-  document.getElementById('garageBtn').style.display='block';
-}
-function updateTop(){document.getElementById('balance').textContent=balance.toFixed(2);document.getElementById('score').textContent=score}
-</script>
-<body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: Arial, sans-serif;
+    function openBets() {
+      if (!carSelected) return alert('First create your racer!');
+      showScreen('bets');
+    }
 
-  background: url('bg.jpg') no-repeat center center;
-  background-size: cover;
+    function carPower() {
+      return Math.round((stats.speed * 0.4) + (stats.handling * 0.25) + (stats.hp / 10 * 0.2) + (stats.torque / 10 * 0.15) + (stats.level * 4));
+    }
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    function upgradeCar() {
+      if (score < 20) return alert('Upgrade unlocks at 20 score');
+      if (balance < 15) return alert('Not enough test USDT');
+
+      balance -= 15;
+      stats.level++;
+      stats.hp += 25;
+      stats.torque += 28;
+      stats.speed += 3;
+      stats.handling += 3;
+
+      updateTop();
+      renderStats();
+      alert('Racer upgraded!');
+    }
+
+    function startRace(bet) {
+      if (balance < bet) return alert('Not enough test USDT');
+
+      showScreen('race');
+      document.getElementById('raceTitle').textContent = 'Bet: ' + bet + ' USDT';
+      document.getElementById('result').textContent = '';
+      document.getElementById('againBtn').style.display = 'none';
+      document.getElementById('garageBtn').style.display = 'none';
+
+      let p1 = 0;
+      let p2 = 0;
+      const p1El = document.getElementById('p1');
+      const p2El = document.getElementById('p2');
+      const car1 = document.getElementById('car1');
+      const car2 = document.getElementById('car2');
+
+      p1El.style.width = '0%';
+      p2El.style.width = '0%';
+      car1.style.transform = 'translateX(0)';
+      car2.style.transform = 'translateX(0)';
+
+      const my = carPower();
+      const op = Math.round(55 + Math.random() * 55 + score / 20);
+      document.getElementById('myPower').textContent = my;
+      document.getElementById('opPower').textContent = op;
+
+      const myBoost = 4.2 + (my / 100) * 2.6;
+      const opBoost = 4.2 + (op / 100) * 2.6;
+
+      const interval = setInterval(() => {
+        p1 += Math.random() * myBoost;
+        p2 += Math.random() * opBoost;
+
+        const w1 = Math.min(p1, 100);
+        const w2 = Math.min(p2, 100);
+
+        p1El.style.width = w1 + '%';
+        p2El.style.width = w2 + '%';
+        car1.style.transform = `translateX(${w1 * 3}px)`;
+        car2.style.transform = `translateX(${w2 * 3}px)`;
+
+        if (p1 >= 100 || p2 >= 100) {
+          clearInterval(interval);
+          finishRace(p1, p2, bet);
+        }
+      }, 130);
+    }
+
+    function finishRace(p1, p2, bet) {
+      const result = document.getElementById('result');
+      const prize = bet * 2 * 0.925;
+
+      if (p1 > p2) {
+        balance = balance - bet + prize;
+        score += 10;
+        result.textContent = '🏆 YOU WIN +' + prize.toFixed(2) + ' USDT';
+      } else {
+        balance -= bet;
+        score += 2;
+        result.textContent = '❌ YOU LOSE -' + bet + ' USDT';
+      }
+
+      updateTop();
+      renderStats();
+      document.getElementById('againBtn').style.display = 'block';
+      document.getElementById('garageBtn').style.display = 'block';
+    }
+
+    function updateTop() {
+      document.getElementById('balance').textContent = balance.toFixed(2);
+      document.getElementById('score').textContent = score;
+    }
+  </script>
+</body>
 </html>
